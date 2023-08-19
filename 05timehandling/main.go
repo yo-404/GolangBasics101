@@ -20,4 +20,7 @@ func main() {
 
 	fmt.Println("date for today is ", createDate)
 	fmt.Println("formatted date", createDate.Format("Monday 02 Jan 2006"))
+
+	fmt.Scanf("h")
+	// os.Exit(0)
 }
