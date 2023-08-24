@@ -1,0 +1,19 @@
+{
+    "name": "webserver-basic-yo-404",
+    "version": "1.0.0",
+    "description": "a web server for golang learning",
+    "main": "index.js",
+    "scripts": {
+      "start": "nodemon index.js"
+    },
+    "keywords": [
+      "webserver",
+      "GolangBasics101"
+    ],
+    "author": "Yogesh Yadav",
+    "license": "None",
+    "dependencies": {
+      "express": "^4.17.1",
+      "nodemon": "^2.0.12"
+    }
+  }
