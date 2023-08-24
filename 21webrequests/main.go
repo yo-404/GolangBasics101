@@ -10,7 +10,8 @@ import (
 func main() {
 	// get Request
 	fmt.Println("web requests in GO lang")
-	performGetRequest()
+	// performGetRequest()
+	performPostJsonRequest()
 
 }
 
@@ -40,4 +41,32 @@ func performGetRequest() {
 	// fmt.Println(string(content))
 	// using string builder
 
+}
+
+func performPostJsonRequest() {
+	const myurl = "http://localhost:8000/post"
+
+	// fake json payload
+
+	requestBody := strings.NewReader(`
+		{
+			"name":"Yogesh",
+			"Age":"23",
+			"OS":"linux"
+		}
+	`)
+
+	response, err := http.Post(myurl, "application/json", requestBody)
+	if err != nil {
+		panic(err)
+	}
+
+	defer response.Body.Close()
+	// webserver sends back the same response sent by the user
+	content, err := io.ReadAll(response.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(content))
 }
