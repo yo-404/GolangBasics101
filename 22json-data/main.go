@@ -18,7 +18,8 @@ type details struct {
 
 func main() {
 	fmt.Println("Json data handling")
-	EncodeJSON()
+	// EncodeJSON()
+	DecodeJSON()
 
 }
 
@@ -38,4 +39,39 @@ func EncodeJSON() {
 		panic(err)
 	}
 	fmt.Println(string(finalJson))
+}
+
+func DecodeJSON() {
+
+	jsonData := []byte(`
+	{
+		"studentname": "Yogesh",
+		"Age": 23,
+		"Language": "GO",
+		"tags": ["student","fresher"]
+	}
+
+	`)
+	var students details
+	checkValid := json.Valid(jsonData)
+	if checkValid {
+		fmt.Println("json was valid")
+		json.Unmarshal(jsonData, &students)
+		fmt.Printf("%#v\n", students)
+	} else {
+		fmt.Println("json was not valid")
+	}
+
+	// there are some cases where u just want to add data to key value pair
+
+	var mydataMap map[string]interface{}
+	json.Unmarshal(jsonData, &mydataMap)
+	fmt.Printf("%#v\n", mydataMap)
+	fmt.Printf("\n\n")
+
+	// order is not guaranteed in map
+	for key, value := range mydataMap {
+		fmt.Printf("Key is %v and value is %v and type is %T\n", key, value, value)
+	}
+
 }
