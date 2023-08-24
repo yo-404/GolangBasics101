@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -11,7 +12,8 @@ func main() {
 	// get Request
 	fmt.Println("web requests in GO lang")
 	// performGetRequest()
-	performPostJsonRequest()
+	// performPostJsonRequest()
+	performPostFormOperation()
 
 }
 
@@ -63,6 +65,30 @@ func performPostJsonRequest() {
 
 	defer response.Body.Close()
 	// webserver sends back the same response sent by the user
+	content, err := io.ReadAll(response.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(content))
+}
+
+func performPostFormOperation() {
+	const myurl = "http://localhost:8000/postform"
+
+	// fake form data
+
+	data := url.Values{}
+	data.Add("firstname", "yogesh")
+	data.Add("location", "pune")
+	data.Add("age", "23")
+
+	response, err := http.PostForm(myurl, data)
+	if err != nil {
+		panic(err)
+	}
+
+	defer response.Body.Close()
 	content, err := io.ReadAll(response.Body)
 	if err != nil {
 		panic(err)
