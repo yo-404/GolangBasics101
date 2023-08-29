@@ -14,8 +14,8 @@ import (
 
 // model for courses - file
 type Course struct {
-	CourseId    string  `json:"courseid`
-	CourseName  string  `json:"coursname"`
+	CourseId    string  `json:"courseid"`
+	CourseName  string  `json:"coursename"`
 	CoursePrice int     `json:"price"`
 	Author      *Author `json:"author"`
 }
@@ -32,7 +32,7 @@ var courses []Course
 // middleware
 func (c *Course) IsEmpty() bool {
 	// return c.CourseId == "" && c.CourseName == ""
-	return c.CourseId == ""
+	return c.CourseName == ""
 }
 
 func main() {
@@ -52,7 +52,7 @@ func main() {
 	r.HandleFunc("/course/{id}", deleteOneCourse).Methods("DELETE")
 
 	// listen to a port
-	log.Fatal(http.ListenAndServe(":3000", r))
+	log.Fatal(http.ListenAndServe(":4000", r))
 }
 
 // controller - file
@@ -89,7 +89,7 @@ func getOneCourse(w http.ResponseWriter, r *http.Request) {
 
 func createOneCourse(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Create one course")
-	w.Header().Set("Content-Type", "applicatioan/json")
+	w.Header().Set("Content-Type", "application/json")
 
 	// what if: body is empty
 	if r.Body == nil {
@@ -110,7 +110,6 @@ func createOneCourse(w http.ResponseWriter, r *http.Request) {
 
 	// generate unique id, string
 	// append course into courses
-
 	rand.Seed(time.Now().UnixNano())
 	course.CourseId = strconv.Itoa(rand.Intn(100))
 	courses = append(courses, course)
