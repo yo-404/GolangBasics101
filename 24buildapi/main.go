@@ -52,7 +52,7 @@ func main() {
 	r.HandleFunc("/course/{id}", deleteOneCourse).Methods("DELETE")
 
 	// listen to a port
-	log.Fatal(http.ListenAndServe(":4000", r))
+	log.Fatal(http.ListenAndServe(":3000", r))
 }
 
 // controller - file
