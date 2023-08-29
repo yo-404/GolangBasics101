@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -36,6 +37,22 @@ func (c *Course) IsEmpty() bool {
 
 func main() {
 	fmt.Println("Welcome to api creations")
+	r := mux.NewRouter()
+
+	// seeding
+	courses = append(courses, Course{CourseId: "2", CourseName: "Golang", CoursePrice: 198, Author: &Author{Fullname: "yogesh", Website: "tunelives.com"}})
+	courses = append(courses, Course{CourseId: "3", CourseName: "TerraForm", CoursePrice: 05, Author: &Author{Fullname: "Yogi", Website: "github.com/yo-404"}})
+
+	r.HandleFunc("/", serveHome).Methods("GET")
+	r.HandleFunc("/courses", getAllCourses).Methods("GET")
+	// params router id
+	r.HandleFunc("/course/{id}", getOneCourse).Methods("GET")
+	r.HandleFunc("/course", createOneCourse).Methods("POST")
+	r.HandleFunc("/course/{id}", UpdateOneCourse).Methods("PUT")
+	r.HandleFunc("/course/{id}", deleteOneCourse).Methods("DELETE")
+
+	// listen to a port
+	log.Fatal(http.ListenAndServe(":3000", r))
 }
 
 // controller - file
@@ -72,29 +89,34 @@ func getOneCourse(w http.ResponseWriter, r *http.Request) {
 
 func createOneCourse(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Create one course")
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "applicatioan/json")
 
-	// what if : body is empty
+	// what if: body is empty
 	if r.Body == nil {
-		json.NewEncoder(w).Encode("body is empty . No data was present !!")
+		json.NewEncoder(w).Encode("Please send some data")
 	}
 
-	// what if data is - {}
+	// what about - {}
+
 	var course Course
 	_ = json.NewDecoder(r.Body).Decode(&course)
 	if course.IsEmpty() {
-		json.NewEncoder(w).Encode("No data was present in json !!")
+		json.NewEncoder(w).Encode("No data inside JSON")
 		return
 	}
 
-	// generate a unique id , convert into string
-	// add / append new course into course db/slice in our case
+	//TODO: check only if title is duplicate
+	// loop, title matches with course.coursename, JSON
+
+	// generate unique id, string
+	// append course into courses
 
 	rand.Seed(time.Now().UnixNano())
 	course.CourseId = strconv.Itoa(rand.Intn(100))
 	courses = append(courses, course)
 	json.NewEncoder(w).Encode(course)
 	return
+
 }
 
 func UpdateOneCourse(w http.ResponseWriter, r *http.Request) {
@@ -132,6 +154,6 @@ func deleteOneCourse(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
-	json.Encoder(w).Encode("course deleted successfully")
+	json.NewEncoder(w).Encode("course deleted successfully")
 
 }
