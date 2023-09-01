@@ -9,6 +9,9 @@ import (
 
 // pointers in nature
 var wg sync.WaitGroup
+var mut sync.Mutex //use pointer
+
+var urls []string
 
 func main() {
 	// using go keyword to invoke go routines
@@ -27,6 +30,7 @@ func main() {
 
 	}
 	wg.Wait()
+	fmt.Println(urls)
 }
 
 // func greet(s string) {
@@ -41,7 +45,13 @@ func getStatusCode(endpoint string) {
 	result, err := http.Get(endpoint)
 	if err != nil {
 		log.Fatal(err)
+	} else {
+		// using mutex lock here
+		mut.Lock()
+		urls = append(urls, endpoint)
+		// unlocking mutex
+		mut.Unlock()
+		fmt.Printf(" %d status code for website %s \n", result.StatusCode, endpoint)
 	}
-	fmt.Printf("\n %d 200 status code for website %s", result.StatusCode, endpoint)
 
 }
