@@ -1,3 +1,6 @@
-go 1.21.0
+go 1.21.3
 
-use ./32http-service/videos
+use (
+	./32http-service/videos
+	./33commandlineapp/videos
+)
